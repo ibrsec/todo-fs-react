@@ -72,7 +72,7 @@ const TaskComp = ({ id, title, isDone, priority, description }) => {
             </svg>
           </span>
           <span className="ml-4 text-sm">
-            {title[0].toUpperCase() + title.slice(1)}
+            {title}
           </span>
         </label>
       </div>

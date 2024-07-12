@@ -44,7 +44,7 @@ console.log('sortedTodos', sortedTodos)
               />
             </svg>
             <h4 className="font-semibold ml-3 text-lg">
-              {username[0].toUpperCase() + username.slice(1)}'s Jobs
+              {username}'s Jobs
             </h4>
           </div>
 
