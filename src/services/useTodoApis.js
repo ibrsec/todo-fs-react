@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchTodoStart, fetchTodoSuccess, fetchTodoSuccessWithoutPayload } from "../app/features/todoSlice";
 import { toastError, toastSuccess, toastWarn } from "../helpers/Toastify";
 import { useNavigate } from "react-router-dom";
+import useAuthApis from "./useAuthApis";
 
 const useTodoApis = () => {
   const base_url = process.env.REACT_APP_BASE_URL + "/todos";
@@ -12,6 +13,7 @@ const useTodoApis = () => {
   const token = useSelector((state) => state.login.token);
 //   const token = "useSelector((state) => state.login.token)";
 
+const{logout} = useAuthApis();
 
   //! GET TODOS - #####################
   const getTodos = async () => {
@@ -29,7 +31,7 @@ const useTodoApis = () => {
       const data = await response.json();
       console.log(data);
       if (!response.ok) {
-        expiredSession(response,navigate);
+        expiredSession(response,navigate,logout);
         throw new Error(
           "Response status: " +
             response.status +
@@ -64,7 +66,7 @@ const useTodoApis = () => {
       const response = await fetch(url, options);
       const data = await response.json();
       if (!response.ok) {
-        expiredSession(response,navigate);
+        expiredSession(response,navigate,logout);
         throw new Error(
           "Response status: " +
             response.status +
@@ -102,7 +104,7 @@ const useTodoApis = () => {
       const response = await fetch(url, options);
       const data = await response.json();
       if (!response.ok) {
-        expiredSession(response,navigate);
+        expiredSession(response,navigate,logout);
         throw new Error(
             response.status +
             " - " +
@@ -134,7 +136,7 @@ const useTodoApis = () => {
       const response = await fetch(url, options);
       const data = await response.json();
       if (!response.ok) {
-        expiredSession(response,navigate);
+        expiredSession(response,navigate,logout);
         throw new Error(
             response.status +
             " - " +
@@ -157,9 +159,9 @@ const useTodoApis = () => {
 export default useTodoApis;
 
 
-const expiredSession = function(respoonse,navigate) {
+const expiredSession = function(respoonse,navigate,logout) {
     if(respoonse?.status === 401 ){
         toastWarn("Session is expired!")
-        return navigate('/login')
+        logout();
     }
 }
